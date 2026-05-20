@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChurchPay — Digital Offerings for Every Church</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0B1829;
+    --navy-mid: #152438;
+    --navy-light: #1e3450;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E9C8;
+    --cream: #FAF7F0;
+    --white: #FFFFFF;
+    --text-muted: #8A9BB0;
+    --text-light: #C4CFDD;
+    --border: rgba(201,168,76,0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(11,24,41,0.95);
+    backdrop-filter: blur(12px);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 600;
+    color: var(--white);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .nav-logo .logo-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-light); text-decoration: none;
+    font-size: 0.875rem; font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--navy) !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 2rem 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+    padding: 6px 16px; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text-muted);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none; cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-light);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.2s;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(201,168,76,0.4);
+    color: var(--gold-light);
+  }
+
+  /* HERO MOCKUP */
+  .hero-mockup {
+    margin-top: 4rem;
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .mockup-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .mockup-stat {
+    background: var(--navy-light);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .mockup-stat .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
+  .mockup-stat .value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .mockup-stat .value.gold { color: var(--gold-light); }
+
+  .mockup-qr-row {
+    grid-column: 1 / -1;
+    display: flex; gap: 1rem;
+  }
+
+  .mockup-qr-item {
+    flex: 1;
+    background: var(--navy-light);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .qr-box {
+    width: 48px; height: 48px;
+    background: var(--white);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .qr-box svg { width: 36px; height: 36px; }
+
+  .qr-info .qr-label { font-size: 0.8rem; color: var(--white); font-weight: 500; }
+  .qr-info .qr-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+  .qr-badge {
+    margin-left: auto;
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  /* STATS TICKER */
+  .stats-bar {
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    padding: 1.25rem 2rem;
+    display: flex; justify-content: center; gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-item .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 600;
+    color: var(--gold-light);
+  }
+  .stat-item .desc {
+    font-size: 0.8rem; color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.75rem; font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-sub {
+    font-size: 1.05rem;
+    color: #5A6E84;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* HOW IT WORKS */
+  .how-section { background: var(--white); }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 3.5rem;
+  }
+
+  .step-card {
+    position: relative;
+    padding: 2rem;
+    border: 1px solid rgba(11,24,41,0.1);
+    border-radius: 16px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .step-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; font-weight: 600;
+    color: var(--gold-pale);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step-icon {
+    width: 48px; height: 48px;
+    background: var(--navy);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.15rem; font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+  }
+
+  .step-card p {
+    font-size: 0.9rem; color: #5A6E84;
+    line-height: 1.65;
+  }
+
+  /* DUAL CHANNEL */
+  .channel-section { background: var(--cream); }
+
+  .channel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3.5rem;
+  }
+
+  .channel-card {
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .channel-card.dark {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .channel-card.light {
+    background: var(--white);
+    border: 1px solid rgba(11,24,41,0.1);
+  }
+
+  .channel-card .ch-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .channel-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .channel-card.dark h3 { color: var(--white); }
+  .channel-card.light h3 { color: var(--navy); }
+
+  .channel-card p {
+    font-size: 0.9rem; line-height: 1.65;
+  }
+  .channel-card.dark p { color: var(--text-muted); }
+  .channel-card.light p { color: #5A6E84; }
+
+  .channel-tag {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .channel-card.dark .channel-tag {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+  }
+
+  .channel-card.light .channel-tag {
+    background: rgba(11,24,41,0.06);
+    color: var(--navy);
+  }
+
+  /* FEATURES */
+  .features-section { background: var(--navy); }
+  .features-section .section-title { color: var(--white); }
+  .features-section .section-label { color: var(--gold); }
+  .features-section .section-sub { color: var(--text-muted); }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+
+  .feature-item {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .feature-item:hover { border-color: rgba(201,168,76,0.35); }
+
+  .feature-emoji {
+    font-size: 1.5rem; margin-bottom: 1rem;
+  }
+
+  .feature-item h4 {
+    font-size: 1rem; font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-item p {
+    font-size: 0.85rem; color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* PRICING */
+  .pricing-section { background: var(--cream); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3.5rem;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pricing-card {
+    border-radius: 20px;
+    padding: 2rem;
+  }
+
+  .pricing-card.free {
+    background: var(--white);
+    border: 1px solid rgba(11,24,41,0.1);
+  }
+
+  .pricing-card.pro {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-card.pro::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .plan-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.25rem;
+  }
+
+  .free .plan-badge { background: rgba(11,24,41,0.06); color: var(--navy); }
+  .pro .plan-badge { background: rgba(201,168,76,0.2); color: var(--gold-light); }
+
+  .plan-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 600;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .free .plan-price { color: var(--navy); }
+  .pro .plan-price { color: var(--white); }
+
+  .plan-period {
+    font-size: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .free .plan-period { color: #5A6E84; }
+  .pro .plan-period { color: var(--text-muted); }
+
+  .plan-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .plan-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.875rem;
+  }
+
+  .free .plan-features li { color: #3A4E62; }
+  .pro .plan-features li { color: var(--text-light); }
+
+  .plan-features .check {
+    width: 18px; height: 18px; flex-shrink: 0;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  .free .plan-features .check { background: rgba(11,24,41,0.08); color: var(--navy); }
+  .pro .plan-features .check { background: rgba(201,168,76,0.2); color: var(--gold-light); }
+
+  .btn-plan-free {
+    display: block; text-align: center;
+    background: var(--navy);
+    color: var(--white);
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600; font-size: 0.9rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .btn-plan-free:hover { opacity: 0.85; }
+
+  .btn-plan-pro {
+    display: block; text-align: center;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600; font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-plan-pro:hover { background: var(--gold-light); }
+
+  /* CTA BANNER */
+  .cta-section {
+    background: var(--navy);
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+
+  .cta-section .section-title { color: var(--white); }
+
+  .cta-section p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin: 1rem 0 2.5rem;
+    line-height: 1.7;
+  }
+
+  .cta-note {
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #070F1A;
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600;
+    color: var(--white);
+  }
+
+  .footer-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+
+  .footer-links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.85rem; transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--gold-light); }
+
+  .footer-copy {
+    color: #3A4E62; font-size: 0.8rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .mockup-card { grid-template-columns: 1fr; }
+    .mockup-qr-row { flex-direction: column; }
+    .channel-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 2rem; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">✝</div>
+    ChurchPay
+  </div>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#" class="nav-cta">Get Started Free</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Built for Nigerian Churches
+  </div>
+
+  <h1>Your Church. One QR Code.<br><em>Infinite Offerings.</em></h1>
+
+  <p>Generate a QR code and payment link for your church. Print it on offering cards. Share it on WhatsApp. Members scan and pay in seconds — no cash, no friction.</p>
+
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start Free — No Card Required</a>
+    <a href="#how" class="btn-ghost">See How It Works</a>
+  </div>
+
+  <div class="hero-mockup">
+    <div class="mockup-card">
+      <div class="mockup-stat">
+        <div class="label">This Month</div>
+        <div class="value gold">₦2,847,500</div>
+      </div>
+      <div class="mockup-stat">
+        <div class="label">Transactions</div>
+        <div class="value">1,248</div>
+      </div>
+      <div class="mockup-stat">
+        <div class="label">Active QR Codes</div>
+        <div class="value">4</div>
+      </div>
+
+      <div class="mockup-qr-row">
+        <div class="mockup-qr-item">
+          <div class="qr-box">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="14" height="14" rx="2" fill="#0B1829"/>
+              <rect x="4" y="4" width="10" height="10" rx="1" fill="white"/>
+              <rect x="6" y="6" width="6" height="6" fill="#0B1829"/>
+              <rect x="20" y="2" width="14" height="14" rx="2" fill="#0B1829"/>
+              <rect x="22" y="4" width="10" height="10" rx="1" fill="white"/>
+              <rect x="24" y="6" width="6" height="6" fill="#0B1829"/>
+              <rect x="2" y="20" width="14" height="14" rx="2" fill="#0B1829"/>
+              <rect x="4" y="22" width="10" height="10" rx="1" fill="white"/>
+              <rect x="6" y="24" width="6" height="6" fill="#0B1829"/>
+              <rect x="20" y="20" width="4" height="4" fill="#0B1829"/>
+              <rect x="26" y="20" width="4" height="4" fill="#0B1829"/>
+              <rect x="20" y="26" width="4" height="4" fill="#0B1829"/>
+              <rect x="26" y="26" width="4" height="4" fill="#0B1829"/>
+              <rect x="32" y="20" width="2" height="2" fill="#0B1829"/>
+              <rect x="32" y="24" width="2" height="2" fill="#0B1829"/>
+              <rect x="32" y="28" width="2" height="2" fill="#0B1829"/>
+            </svg>
+          </div>
+          <div class="qr-info">
+            <div class="qr-label">Sunday Offering</div>
+            <div class="qr-sub">churchpay.ng/pay/rccg-warri</div>
+          </div>
+          <div class="qr-badge">Active</div>
+        </div>
+
+        <div class="mockup-qr-item">
+          <div class="qr-box">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="14" height="14" rx="2" fill="#0B1829"/>
+              <rect x="4" y="4" width="10" height="10" rx="1" fill="white"/>
+              <rect x="6" y="6" width="6" height="6" fill="#0B1829"/>
+              <rect x="20" y="2" width="14" height="14" rx="2" fill="#0B1829"/>
+              <rect x="22" y="4" width="10" height="10" rx="1" fill="white"/>
+              <rect x="24" y="6" width="6" height="6" fill="#0B1829"/>
+              <rect x="2" y="20" width="14" height="14" rx="2" fill="#0B1829"/>
+              <rect x="4" y="22" width="10" height="10" rx="1" fill="white"/>
+              <rect x="6" y="24" width="6" height="6" fill="#0B1829"/>
+              <rect x="22" y="20" width="6" height="6" fill="#0B1829"/>
+              <rect x="20" y="28" width="4" height="4" fill="#0B1829"/>
+              <rect x="26" y="26" width="8" height="2" fill="#0B1829"/>
+              <rect x="32" y="22" width="2" height="6" fill="#0B1829"/>
+            </svg>
+          </div>
+          <div class="qr-info">
+            <div class="qr-label">Monthly Tithe</div>
+            <div class="qr-sub">churchpay.ng/pay/rccg-warri/tithe</div>
+          </div>
+          <div class="qr-badge">Active</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="num">500+</div>
+    <div class="desc">Churches Onboarded</div>
+  </div>
+  <div class="stat-item">
+    <div class="num">₦1.2B+</div>
+    <div class="desc">Offerings Processed</div>
+  </div>
+  <div class="stat-item">
+    <div class="num">98%</div>
+    <div class="desc">Uptime Guaranteed</div>
+  </div>
+  <div class="stat-item">
+    <div class="num">30sec</div>
+    <div class="desc">To Generate Your QR Code</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="container">
+    <div class="section-label">Simple Process</div>
+    <h2 class="section-title">Up and running in<br>under 5 minutes</h2>
+    <p class="section-sub">No technical knowledge required. If your church admin can use WhatsApp, they can use ChurchPay.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">🏛️</div>
+        <h3>Register Your Church</h3>
+        <p>Sign up with your church name, email, and bank account details. We verify your account via Paystack in seconds.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">⚡</div>
+        <h3>Generate Your QR Code</h3>
+        <p>Create QR codes for each offering type — Tithe, Sunday Offering, Building Fund, Welfare. Each gets a unique payment link too.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🖨️</div>
+        <h3>Print & Share</h3>
+        <p>Download your printable offering card PDF and paste it on pew seats. Share the payment link on your church WhatsApp group.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-icon">💳</div>
+        <h3>Members Pay Instantly</h3>
+        <p>Members scan the QR or click the link. They enter their amount and pay with any Nigerian bank card or transfer. Funds go directly to your church account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DUAL CHANNEL -->
+<section class="channel-section">
+  <div class="container">
+    <div class="section-label">Two Ways to Collect</div>
+    <h2 class="section-title">In church or<br>anywhere in the world</h2>
+    <p class="section-sub">ChurchPay gives every church two powerful tools to collect offerings — one physical, one digital.</p>
+
+    <div class="channel-grid">
+      <div class="channel-card dark">
+        <div class="ch-icon">📱</div>
+        <h3>QR Code</h3>
+        <p>Print on offering cards and paste on pew seats. Members scan with their phone camera — no app needed. Works with any bank app in Nigeria.</p>
+        <div class="channel-tag">Physical · In-Church Use</div>
+      </div>
+
+      <div class="channel-card light">
+        <div class="ch-icon">🔗</div>
+        <h3>Payment Link</h3>
+        <p>Share on WhatsApp, Telegram, Instagram or your church website. Members click and pay from anywhere — even those who couldn't make it to service.</p>
+        <div class="channel-tag">Digital · Share Anywhere</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-label">Everything You Need</div>
+    <h2 class="section-title">Built for how churches<br>actually operate</h2>
+    <p class="section-sub">Every feature was designed with the Nigerian church experience in mind.</p>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-emoji">🔐</div>
+        <h4>Secure Paystack Integration</h4>
+        <p>Funds go directly to your church bank account via Paystack's trusted payment infrastructure. PCI-DSS compliant.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-emoji">🏷️</div>
+        <h4>Multiple Offering Labels</h4>
+        <p>Create separate QR codes for Tithe, Sunday Offering, Building Fund, Crusade, Welfare — each tracked independently.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-emoji">📊</div>
+        <h4>Offering Analytics</h4>
+        <p>See daily, weekly, and monthly trends. Know which service collected the most. Export reports for your treasurer.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-emoji">🖨️</div>
+        <h4>Printable Offering Cards</h4>
+        <p>Download ready-to-print PDF cards with your church logo and QR code. Professional-looking, zero design skills required.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-emoji">💬</div>
+        <h4>WhatsApp Share Button</h4>
+        <p>One tap to share your payment link directly to any WhatsApp group with a pre-written message ready to send.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-emoji">📋</div>
+        <h4>Transaction Records</h4>
+        <p>Every payment is recorded with payer name, amount, and date. Export as CSV for your financial records anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="container" style="text-align: center;">
+    <div class="section-label">Simple Pricing</div>
+    <h2 class="section-title">Start free.<br>Grow when you're ready.</h2>
+    <p class="section-sub" style="margin: 0 auto;">A small platform fee of 1.5% applies per transaction on all plans — that's how we keep the lights on.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card free">
+        <div class="plan-badge">FREE</div>
+        <div class="plan-price">₦0</div>
+        <div class="plan-period">Forever free</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 1 QR Code + Payment Link</li>
+          <li><span class="check">✓</span> Paystack Checkout</li>
+          <li><span class="check">✓</span> Transaction History</li>
+          <li><span class="check">✓</span> PDF Offering Card</li>
+          <li><span class="check">✓</span> WhatsApp Sharing</li>
+        </ul>
+        <a href="#" class="btn-plan-free">Get Started Free</a>
+      </div>
+
+      <div class="pricing-card pro">
+        <div class="plan-badge">PRO</div>
+        <div class="plan-price" style="color: var(--gold-light);">₦3,000</div>
+        <div class="plan-period">/month</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Unlimited QR Codes</li>
+          <li><span class="check">✓</span> Full Analytics Dashboard</li>
+          <li><span class="check">✓</span> CSV & PDF Exports</li>
+          <li><span class="check">✓</span> Multi-Card Print Sheet</li>
+          <li><span class="check">✓</span> Priority Support</li>
+        </ul>
+        <a href="#" class="btn-plan-pro">Upgrade to Pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="section-title">Ready to modernize<br>your church's offering?</h2>
+    <p>Join hundreds of churches already using ChurchPay.<br>Setup takes less than 5 minutes.</p>
+    <a href="#" class="btn-primary" style="font-size: 1.05rem; padding: 16px 40px;">Create Your Church Account</a>
+    <p class="cta-note">Free forever · No credit card required · 1.5% platform fee per transaction</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">✝ ChurchPay</div>
+    <ul class="footer-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#">Login</a></li>
+      <li><a href="#">Register</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 ChurchPay. Built with faith in Nigeria 🇳🇬</div>
+  </div>
+</footer>
+
+</body>
+</html>
